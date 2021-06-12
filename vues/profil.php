@@ -12,6 +12,10 @@ if(isset($login) and ($login == $_SESSION['login'] or (isset($_SESSION['admin'])
         echo "Email: " .$email; ?><br/><?php
         echo "Login: " .$login; ?><br/><?php
         echo "DateInscription: " .$dateInscription; ?><br/><?php
+        if(isset($logToday, $logPast7Days) and $logToday != -1 and $logPast7Days != -1){
+            echo "nombre de connexions aujourd'hui: " .$logToday; ?><br/><?php
+            echo "nombre de connexions lors des 7 derniers jours: " .$logPast7Days; ?><br/><?php
+        }
     ?></p>
     <form enctype="multipart/form-data" method="post" action="#">
         <p>

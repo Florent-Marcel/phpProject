@@ -328,18 +328,41 @@ function getDetailsFacture($idFacture){
     return $req;
 }
 
-function viewLogUser($user){
+function getLogUserPastDays($user, $nbDays){
     $bdd = connect();
-    $req = $bdd->prepare("SELECT count(*) from logconnexions where DateConnexion between adddate(now(),-30) and now()  AND idUtilisateur=:id");
+    $req = $bdd->prepare("SELECT count(*) as nbConnexions from logconnexions where DateConnexion between adddate(now(),-:nbDays) and now()  AND idUtilisateur=:id");
     $check = $req->execute(array(
+        ':nbDays' => $nbDays,
         ':id' => $user,
     )) or die(print_r($req->errorInfo()));
-    return $req;
+
+    if ($req->rowCount() > 0) {
+        $row = $req->fetch();
+        return $row['nbConnexions'];
+    }
+
+    return -1;
     }
 
 function getusers(){
     $bdd = connect();
     $req = $bdd->query("SELECT * from utilisateurs");
     return $req;
+}
+
+function getLogUserToday($user){
+    $bdd = connect();
+    $req = $bdd->prepare("SELECT count(*) as nbConnexions from logconnexions where DateConnexion > CURDATE() AND idUtilisateur=:id");
+    $check = $req->execute(array(
+        ':id' => $user,
+    )) or die(print_r($req->errorInfo()));
+
+
+    if ($req->rowCount() > 0) {
+        $row = $req->fetch();
+        return $row['nbConnexions'];
+    }
+
+    return -1;
 }
 ?>

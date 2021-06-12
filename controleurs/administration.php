@@ -17,6 +17,8 @@ function profil2()
         $login = $user['login'];
         $avatar = $user['avatar'];
         $dateInscription = $user['dateInscription'];
+        $logToday = getLogUserToday($user['idUtilisateur']);
+        $logPast7Days = getLogUserPastDays($user['idUtilisateur'], 7);
 
         $resultUpdate = updateProfilByAdmin();
         if ($resultUpdate == "La modification a réussi") {
