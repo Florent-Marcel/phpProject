@@ -173,6 +173,10 @@ require("controleurs/administration.php");
             admincommentaires();
             break;
         }
+        case 'adminNews':{
+            adminNews();
+            break;
+        }
         case 'accueil': default:{
             $onIndex = true;
                 //&&include("vues/accueil.php");

@@ -401,4 +401,15 @@ function getCommentairesUser($user){
 
     return $req;
 }
+
+function insertNews($user, $titre, $corps){
+    $bdd = connect();
+    $req = $bdd->prepare('INSERT INTO news (idUtilisateur, titre, corps) values(:idUtilisateur, :titre, :corps)');
+
+    $req->execute(array(
+        ':idUtilisateur' => htmlentities($user),
+        ':titre' => htmlentities($titre),
+        ':corps' => htmlentities($corps),
+    ));    
+}  
 ?>

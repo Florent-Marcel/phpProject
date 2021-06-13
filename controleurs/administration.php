@@ -2,6 +2,7 @@
 
 require_once("modeles/data.php");
 require_once("modeles/uploadImage.php");
+require_once("controleurs/News.php");
 
 
 function profil2()
@@ -80,4 +81,13 @@ function admincommentaires(){
     }
 
     require('vues/unArtCom.php');
+}
+
+function adminNews(){
+    if(isset($_POST['titre'], $_POST['corps'], $_SESSION['idUtilisateur']) and $_SESSION['admin'] == 1){
+        insertNews($_SESSION['idUtilisateur'], $_POST['titre'], $_POST['corps']);
+        unset($_POST['titre'], $_POST['corps']);
+    }
+
+    header("LOCATION: index.php?uc=news");
 }

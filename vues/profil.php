@@ -16,10 +16,11 @@ if(isset($login) and ($login == $_SESSION['login'] or (isset($_SESSION['admin'])
             echo "nombre de connexions aujourd'hui: " .$logToday; ?><br/><?php
             echo "nombre de connexions lors des 7 derniers jours: " .$logPast7Days; ?><br/><?php
         }
-        ?>
-        <a href='index.php?uc=administration3&idUtilisateur=<?= $idUtilisateur ?>'>Voir les factures</a>
-        <a href='index.php?uc=administration4&idUtilisateur=<?= $idUtilisateur ?>'>Voir les commentaires</a>
-        <?php
+        if(isset($idUtilisateur)){ ?>
+            <a href='index.php?uc=administration3&idUtilisateur=<?= $idUtilisateur ?>'>Voir les factures</a>
+            <a href='index.php?uc=administration4&idUtilisateur=<?= $idUtilisateur ?>'>Voir les commentaires</a>
+            <?php
+        }
     ?></p>
     <form enctype="multipart/form-data" method="post" action="#">
         <p>
@@ -63,8 +64,7 @@ if(isset($login) and ($login == $_SESSION['login'] or (isset($_SESSION['admin'])
             ?>
             <p>
                 <label for="indesirable">Indésirable</label>
-                <?= $indesirable ?>
-                <input type="checkbox" id="indesirable" name="indesirable" <?php echo ($indesirable == '1') ? 'checked' : ''; ?> />
+                <input type="checkbox" id="indesirable" name="indesirable" <?php echo (isset($indesirable) and $indesirable == '1') ? 'checked' : ''; ?> />
             </p>
             <?php 
         } ?>

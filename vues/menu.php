@@ -23,8 +23,7 @@
 			<?php
 			if (isset($_SESSION['admin'])){
 				if ($_SESSION['admin']=='1') { ?>
-					<a href="index.php?uc=administration1">Administration - Editer un billet</a>
-					<a href="index.php?uc=administration2">Administration - Consulter les données des utilissateurs</a>
+					<a href="index.php?uc=administration2">Admin - données utilisateurs</a>
 			<?php } }?>
 		</div>		
 	</nav>
