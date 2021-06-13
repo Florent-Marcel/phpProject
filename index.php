@@ -166,11 +166,11 @@ require("controleurs/administration.php");
             break;
         }
         case 'administration3':{
-            //listAchats();
+            adminGetFactures();
             break;
         }
         case 'administration4':{
-            //listBlog();
+            admincommentaires();
             break;
         }
         case 'accueil': default:{

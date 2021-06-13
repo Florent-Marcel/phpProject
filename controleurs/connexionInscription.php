@@ -43,6 +43,7 @@ function connexion()
             $_SESSION['avatar'] = $user['avatar'];
             $_SESSION['idUtilisateur'] = $user['idUtilisateur'];
             $_SESSION['admin'] = $user['admin'];
+            $_SESSION['indesirable'] = $user['indesirable'];
             addLog($_SESSION['login']);
             $resultConnexion = "Connexion réussie, bienvenue " . $_SESSION['login'];
         } else {
@@ -69,6 +70,8 @@ function deconnexion()
         unset($_SESSION['avatar']);
         unset($_SESSION['panier']);
         unset($_SESSION['idUtilisateur']);
+        unset($_SESSION['admin']);
+        unset($_SESSION['indesirable']);
         $resultdeco = "Déconnexion réussie";
         header("Refresh:1");
     }

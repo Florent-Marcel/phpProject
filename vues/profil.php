@@ -16,24 +16,36 @@ if(isset($login) and ($login == $_SESSION['login'] or (isset($_SESSION['admin'])
             echo "nombre de connexions aujourd'hui: " .$logToday; ?><br/><?php
             echo "nombre de connexions lors des 7 derniers jours: " .$logPast7Days; ?><br/><?php
         }
+        ?>
+        <a href='index.php?uc=administration3&idUtilisateur=<?= $idUtilisateur ?>'>Voir les factures</a>
+        <a href='index.php?uc=administration4&idUtilisateur=<?= $idUtilisateur ?>'>Voir les commentaires</a>
+        <?php
     ?></p>
     <form enctype="multipart/form-data" method="post" action="#">
         <p>
-            <input type="hidden" name="login" value="<?=$login?>">
-            <?php $address = isset($_POST['address']) ? $_POST['address'] : null; ?>
+            <?php 
+            if(isset($_SESSION['admin']) and $_SESSION['admin'] == 1){
+                ?>
+                <p>
+                    <label for="login">Login</label>
+                    <input type="text" name="login" value="<?= $login ?>">
+                </p><?php
+            } else{
+                ?><input type="hidden" name="login" value="<?= $login ?>"><?php
+            } ?>
+            
             <label for="address">Adresse</label>
-            <input type="text" id="address" name="address" value=<?php echo '"' . $address . '"'; ?>/>
+            <input type="text" id="address" name="address" value="<?= $adresse ?>"/>
         </p>
 
         <p>
-            <?php $postcode = isset($_POST['postcode']) ? $_POST['postcode'] : null; ?>
             <label for="postcode">Code postale</label>
-            <input type="text" id="postcode" name="postcode" value=<?php echo '"' . $postcode . '"'; ?>/>
+            <input type="text" id="postcode" name="postcode" value="<?= $cp ?>"/>
         </p>
 
         <p>
             <label for="email">e-mail</label>
-            <input type="email" id="email" name="email"/>
+            <input type="email" id="email" name="email" value="<?= $email ?>"/>
         </p>
 
         <p>
@@ -45,6 +57,18 @@ if(isset($login) and ($login == $_SESSION['login'] or (isset($_SESSION['admin'])
             <label for="passwordRepeat">Retapez le mot de passe</label>
             <input type="password" id="passwordRepeat" name="passwordRepeat"/>
         </p>
+
+        <?php 
+        if(isset($_SESSION['admin']) and $_SESSION['admin'] == 1){
+            ?>
+            <p>
+                <label for="indesirable">Indésirable</label>
+                <?= $indesirable ?>
+                <input type="checkbox" id="indesirable" name="indesirable" <?php echo ($indesirable == '1') ? 'checked' : ''; ?> />
+            </p>
+            <?php 
+        } ?>
+
         <input type="submit" value="Modifier" />
     </form>
     <?php 

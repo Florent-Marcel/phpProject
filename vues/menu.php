@@ -25,8 +25,6 @@
 				if ($_SESSION['admin']=='1') { ?>
 					<a href="index.php?uc=administration1">Administration - Editer un billet</a>
 					<a href="index.php?uc=administration2">Administration - Consulter les données des utilissateurs</a>
-					<a href="index.php?uc=administration3">Administration - Consulter la liste des achats d'un utilisateur</a>
-					<a href="index.php?uc=administration4">Administration - Consulter les 5 commentaires du Blog</a>
 			<?php } }?>
 		</div>		
 	</nav>

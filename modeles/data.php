@@ -46,7 +46,7 @@ function newUser($lastname, $firstname, $address, $postcode, $birthdate, $email,
     return $check;
 }
 
-function updateUser($login, $address, $postcode, $email, $password){
+function updateUser($login, $address = "", $postcode = "", $email = "", $password = "", $indesirable = ""){
     $bdd = connect();
     $user = getUser($login);
     if($user){
@@ -64,13 +64,19 @@ function updateUser($login, $address, $postcode, $email, $password){
         } else{
             $password = password_hash($password, PASSWORD_DEFAULT);
         }
-        $req = $bdd->prepare('UPDATE utilisateurs set adresse=:address, cp=:cp, email=:email, motDePasse=:password where login=:login ');
+        if($indesirable === ""){
+            $indesirable = $user['indesirable'];
+        }
+        $req = $bdd->prepare('UPDATE utilisateurs 
+                                set adresse=:address, cp=:cp, email=:email, motDePasse=:password, indesirable=:indesirable 
+                                where login=:login ');
         $check = $req->execute(array(
             'address' => htmlentities($address),
             'cp' => htmlentities($postcode),
             'email' => htmlentities($email),
             'login' => htmlentities($login),
-            'password' => htmlentities($password)
+            'password' => htmlentities($password),
+            'indesirable' => htmlentities($indesirable),
         )) or die(print_r($req->errorInfo()));
         
         return $check;
@@ -136,9 +142,25 @@ function getUser($login){
     return false;
 }
 
+function getUserbyID($idUtilisateur){
+    $bdd = connect();
+    $req = $bdd->prepare("SELECT * FROM utilisateurs WHERE idUtilisateur=:idUtilisateur");
+    $check = $req->execute(array(
+        ':idUtilisateur' => $idUtilisateur,
+    )) or die(print_r($req->errorInfo()));
+
+    if ($req->rowCount() > 0) {
+        $row = $req->fetch();
+        return $row;
+    }
+    return false;
+}
+
 function getArticles(){
     $bdd = connect();
-    $req = $bdd->query('SELECT idNews, titre, corps, DATE_FORMAT(dateCreation, \'%d/%m/%Y à %Hh%imin%ss\') AS date_creation_fr FROM News ORDER BY dateCreation desc limit 0, 3 ');
+    $req = $bdd->query('SELECT idNews, titre, corps, DATE_FORMAT(dateCreation, \'%d/%m/%Y à %Hh%imin%ss\') AS date_creation_fr 
+                            FROM News 
+                            ORDER BY dateCreation desc limit 0, 3 ');
 
     return $req;
 }
@@ -164,7 +186,7 @@ function getCommentaires($idNews){
     $req = $bdd->prepare('SELECT idNews, login, commentaire, DATE_FORMAT(commentaires.dateCreation, \'%d/%m/%Y à %Hh%imin%ss\') AS dateCom
                              FROM Commentaires
                              join Utilisateurs on Utilisateurs.idUtilisateur = Commentaires.idUtilisateur
-                             where idNews=:idNews order by dateCom');
+                             where idNews=:idNews order by commentaires.dateCreation asc');
     $req->execute(array(
         ':idNews' => htmlentities($idNews),
     ));
@@ -364,5 +386,19 @@ function getLogUserToday($user){
     }
 
     return -1;
+}
+
+function getCommentairesUser($user){
+    $bdd = connect();
+    echo $user;
+    $req = $bdd->prepare('SELECT idNews, login, commentaire, DATE_FORMAT(commentaires.dateCreation, \'%d/%m/%Y à %Hh%imin%ss\') AS dateCom
+                             FROM Commentaires
+                             join Utilisateurs on Utilisateurs.idUtilisateur = Commentaires.idUtilisateur
+                             where Commentaires.idUtilisateur=:idUtilisateur order by commentaires.dateCreation desc LIMIT 5');
+    $req->execute(array(
+        ':idUtilisateur' => htmlentities($user),
+    ));
+
+    return $req;
 }
 ?>

@@ -6,8 +6,9 @@ require_once("modeles/uploadImage.php");
 
 function profil2()
 {
-    if (isset($_GET['login'])) {
-        $user = getUser($_GET['login']);
+    if (isset($_GET['idUtilisateur'])) {
+        $user = getUserbyID($_GET['idUtilisateur']);
+        $idUtilisateur = $user[('idUtilisateur')];
         $nom = $user['nom'];
         $prenom = $user['prenom'];
         $adresse = $user['adresse'];
@@ -17,6 +18,7 @@ function profil2()
         $login = $user['login'];
         $avatar = $user['avatar'];
         $dateInscription = $user['dateInscription'];
+        $indesirable = $user['indesirable'];
         $logToday = getLogUserToday($user['idUtilisateur']);
         $logPast7Days = getLogUserPastDays($user['idUtilisateur'], 7);
 
@@ -41,7 +43,13 @@ function updateProfilByAdmin()
 {
     if (isset($_POST['login']) and (($_POST['address']) or (isset($_POST['postcode'])) or (isset($_POST['email'])) or ((isset($_POST['password'])) and (isset($_POST['passwordRepeat']))))) {
         if ($_POST['password'] == $_POST['passwordRepeat']) {
-            $result = updateUser($_POST['login'], $_POST['address'], $_POST['postcode'], $_POST['email'], $_POST['password']);
+            if(isset($_POST['indesirable'])){
+                $indesirable = 1;
+            } else {
+                $indesirable = 0;
+            }
+            echo $indesirable;
+            $result = updateUser($_POST['login'], $_POST['address'], $_POST['postcode'], $_POST['email'], $_POST['password'], $indesirable);
             if ($result) {
                 return "La modification a réussi";
                 header("Refresh:1");
@@ -54,16 +62,22 @@ function updateProfilByAdmin()
     }
 }
 
-function viewLogs()
-{
-    if (isset($_SESSION['admin'])){
-        if ($_SESSION['admin']='1') {
-            $result = viewLogUser($user);
-        }
-    }
-    require('vues/dernierslog.php');
+function adminGetFactures(){
+    $factures = getFacturesByIDUtilisateur($_GET['idUtilisateur']);
+
+    require('vues/factures.php');
 }
 
 function adminVueProf(){
     require("vues/profil.php");
+}
+
+function admincommentaires(){
+    if(isset($_GET['idUtilisateur'])){
+        $commentaires = getCommentairesUser($_GET['idUtilisateur']);
+    } else{
+        $erreur = "Vous n'avez pas sélectionné d'utilisateur";
+    }
+
+    require('vues/unArtCom.php');
 }

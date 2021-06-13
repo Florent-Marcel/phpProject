@@ -15,7 +15,7 @@
             <td><?=($donnees['email'])?></td>
             <td><?=($donnees['dateInscription'])?></td>
             <td><?=($donnees['indesirable'])?></td>
-            <td><a href="index.php?uc=administration21&login=<?=$donnees['login']?>">Modifier</a></td>
+            <td><a href="index.php?uc=administration21&idUtilisateur=<?=$donnees['idUtilisateur']?>">Consulter</a></td>
             </tr>
     <?php
     }

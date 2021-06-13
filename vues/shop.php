@@ -50,42 +50,57 @@ if(isset($articles)){
     }
 }
 
-if(isset($_SESSION['panier'])){
-    //echo implode(",", array_keys($_SESSION['panier']));
-    //print_r($_SESSION['panier']);
-    ?>
-    <h3>Panier</h3>
-    <?php
-    if(isset($articlesShop)){
-        $total = 0;
-        $calcul = 0;
-        if($articlesShop->rowCount() > 0){
-            while($articleShop = $articlesShop->fetch()){
-                $calcul = $articleShop['prix'] * $_SESSION['panier'][$articleShop['idArticle']];
-                $total += $calcul
+if(isset($_SESSION['login']) and $_SESSION['indesirable'] == 0){ 
+    if(isset($_SESSION['panier'])){
+        //echo implode(",", array_keys($_SESSION['panier']));
+        //print_r($_SESSION['panier']);
+        ?>
+        <h3>Panier</h3>
+        <?php
+        if(isset($articlesShop)){
+            $total = 0;
+            $calcul = 0;
+            if($articlesShop->rowCount() > 0){
+                while($articleShop = $articlesShop->fetch()){
+                    $calcul = $articleShop['prix'] * $_SESSION['panier'][$articleShop['idArticle']];
+                    $total += $calcul
+                    ?>
+                    <p>
+                    <?= $articleShop['nom'] ?> 	➔ <?= $_SESSION['panier'][$articleShop['idArticle']] ?> * <?= $articleShop['prix'] ?>€ = <?= $calcul ?>€
+                    </p>
+                    <?php
+                }
+                $_SESSION['total'] = $total;
                 ?>
                 <p>
-                <?= $articleShop['nom'] ?> 	➔ <?= $_SESSION['panier'][$articleShop['idArticle']] ?> * <?= $articleShop['prix'] ?>€ = <?= $calcul ?>€
+                
+                Total: <?= $total ?>€
+                </p>
+                <p>
+                    <form method="post" action="index.php?uc=factures&payement=1">
+                        <input type="hidden" name="payement" value="ok">
+                        <input type="submit">
+                    </form>
                 </p>
                 <?php
+            } else{
+                ?><p><strong>Le panier est vide</strong></p><?php
             }
-            $_SESSION['total'] = $total;
-            ?>
-            <p>
-            
-            Total: <?= $total ?>€
-            </p>
-            <p>
-                <form method="post" action="index.php?uc=factures&payement=1">
-                    <input type="hidden" name="payement" value="ok">
-                    <input type="submit">
-                </form>
-            </p>
-            <?php
-        } else{
-            ?><p><strong>Le panier est vide</strong></p><?php
         }
     }
+} elseif(isset($_SESSION['indesirable']) and $_SESSION['indesirable'] == 1){
+    ?>
+    <p>
+        Vous avez été jugé comme indsirable et n'avez donc plus accès à cette partie du site.
+    </p>
+    <?php
+} else{
+    ?>
+    <p>
+        Pour devez être connecter pour pouvoir acheter.
+        <a href="index.php?uc=afficheConnexion">Se connecter</a>
+    </p>
+    <?php
 }
 
 ?>

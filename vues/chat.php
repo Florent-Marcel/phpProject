@@ -1,10 +1,14 @@
 <div class="sidebarheader">Chat</div>
 <div class="widget"></div>        
+
+
+
         <script>
+            //alert("ds");
             <?php require("scripts/Message.js"); ?>
 
             <?php require("scripts/Chat.js"); ?>
-
+            
             var monChat = new Chat();
 
             function func(){
@@ -18,7 +22,7 @@
                     pe.innerHTML = "<strong>Votre message est trop long</strong>";
                     document.getElementById("erreur").appendChild(pe);
                 } else{
-                    var login = "<?= $_SESSION['login'] ?>";
+                    var login = "<?php echo (isset($_SESSION['login'])) ? $_SESSION['login'] : ''; ?>";
                     req.open("GET", "./ajax/ajax.php?AjaxUc=sendMessage&messageText="+messageText+"&login="+login, false);
                     req.send(null);
                     if(req.responseText != 0)
@@ -43,7 +47,7 @@
         },1000);
         </script>
         <?php
-        //}
+        if(isset($_SESSION['login']) and $_SESSION['indesirable'] == 0){
         ?>
         <form method="post" action="index.php?uc=chat">
             <p>
@@ -59,3 +63,20 @@
                 <input type="submit" value="envoyer message">
             </p>
         </form>
+        
+        <?php 
+        } elseif(isset($_SESSION['indesirable']) and $_SESSION['indesirable'] == 1){
+            ?>
+            <p>
+                Vous avez été jugé comme indsirable et n'avez donc plus accès à cette partie du site.
+            </p>
+            <?php
+        } else{
+            ?>
+            <p>
+                Pour devez être connecter pour envoyer des messages.
+                <a href="index.php?uc=afficheConnexion">Se connecter</a>
+            </p>
+            <?php
+        }
+?>
