@@ -23,13 +23,12 @@ if(isset($login) and ($login == $_SESSION['login'] or (isset($_SESSION['admin'])
         }
     ?></p>
     <form enctype="multipart/form-data" method="post" action="#">
-        <p>
             <?php 
             if(isset($_SESSION['admin']) and $_SESSION['admin'] == 1){
                 ?>
                 <p>
                     <label for="login">Login</label>
-                    <input type="text" name="login" value="<?= $login ?>">
+                    <input type="text" name="login" id="login" value="<?= $login ?>">
                 </p><?php
             } else{
                 ?><input type="hidden" name="login" value="<?= $login ?>"><?php
@@ -37,7 +36,6 @@ if(isset($login) and ($login == $_SESSION['login'] or (isset($_SESSION['admin'])
             
             <label for="address">Adresse</label>
             <input type="text" id="address" name="address" value="<?= $adresse ?>"/>
-        </p>
 
         <p>
             <label for="postcode">Code postale</label>

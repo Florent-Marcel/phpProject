@@ -14,7 +14,7 @@ if(isset($_SESSION['admin']) and $_SESSION['admin'] == 1){
             <input type="text" name="titre" id="titre" required>
         </p>
         <p>
-            <label for="corps">Corps</label>
+            <label>Corps</label>
             <textarea name="corps" id="coprs" required></textarea>
         </p>
         <p>
@@ -25,6 +25,16 @@ if(isset($_SESSION['admin']) and $_SESSION['admin'] == 1){
     <?php
 }
 ?>
+<h1>Rechercher</h1>
+<form enctype="multipart/form-data" method="POST" action="index.php?uc=rechercherNews">
+    <p>
+        <label for="aRechercher">Rechercher:</label>
+        <input type="text" name="aRechercher" id="aRechercher">
+    </p>
+    <p>
+        <input type="submit" value="envoyer">
+    </p>
+</form>
 
 <h1>Les dernières news !</h1>
 <p>Les 3 dernières news: </p>

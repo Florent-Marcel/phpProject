@@ -1,4 +1,4 @@
-<div id="contentarea">
+
 
 <?php $title = "Un article"; ?>
 
@@ -71,4 +71,3 @@ if(isset($commentaires)){
     }
 }
 ?>
-</div>

@@ -1,4 +1,4 @@
-<div id="contentarea">
+
 <?php ob_start(); ?>
 <h2>S'inscrire</h2>
         <form enctype="multipart/form-data" method="post" action="index.php?uc=nouvelUtilisateur">
@@ -62,7 +62,7 @@
             
             ?>
         </form>
-</div>
+
 <?php $content = ob_get_clean(); 
 
 require("template.php"); ?>

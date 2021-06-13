@@ -2,7 +2,7 @@
 if(session_id() == ""){
     session_start();
 }
-
+ob_start(); 
 if((isset($_SESSION['login'])) and isset($_SESSION['avatar'])){
     ?>
     <h3>Bienvenue <?php echo $_SESSION['login']; ?></h3>
@@ -12,7 +12,7 @@ if((isset($_SESSION['login'])) and isset($_SESSION['avatar'])){
 } 
 $title = 'index';
 
-ob_start(); 
+
 define("serveur", "mysql:host=localhost");
 //echo serveur;
 //include 'vues/entete.php';
@@ -106,6 +106,11 @@ require("controleurs/administration.php");
 
         case 'news':{
                 listeDernierArticles();
+            break;
+        }
+
+        case 'rechercherNews':{
+                rechercherArticles();
             break;
         }
 

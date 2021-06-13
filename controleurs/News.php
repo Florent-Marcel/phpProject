@@ -5,6 +5,14 @@ function listeDernierArticles(){
     require('vues/dernieresNews.php');
 }
 
+function rechercherArticles(){
+    if(isset($_POST['aRechercher'])){
+        $req = listeArticles($_POST['aRechercher']);
+    }
+
+    require('vues/dernieresNews.php');
+}
+
 function unArticle(){
     if(isset($_GET['idNews'])){
         $news = getUnArticle($_GET['idNews']);

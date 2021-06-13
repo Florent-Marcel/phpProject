@@ -1,13 +1,12 @@
-<div id="contentarea">
-<p>
+
     <form method="post" action="index.php?uc=shop">
         <select name="categorie" onchange="this.form.submit()" onselect="this.form.submit()">
         <?php 
         if(isset($categories)){
-            ?><option valeur=" " ></option><?php
+            ?><option value=" " >Aucun</option><?php
             while($categorie = $categories->fetch()){
                 ?>
-                <option valeur="<?=$categorie['categorie'] ?>" 
+                <option value="<?=$categorie['categorie'] ?>" 
                 <?php if((isset($_POST['categorie'])) and ($_POST['categorie'] == $categorie['categorie'])){
                     ?> selected="selected" <?php 
                 } ?>
@@ -17,7 +16,6 @@
         } ?>
         </select>
     </form>
-</p>
 <?php
 
 if(isset($_POST['categorie'], $_SESSION['admin']) and $_SESSION['admin'] == 1){
@@ -25,7 +23,7 @@ if(isset($_POST['categorie'], $_SESSION['admin']) and $_SESSION['admin'] == 1){
     <h1>Créer article</h1>
     <form enctype="multipart/form-data" method="POST" action="index.php?uc=adminAjouterShop">
         <p>
-            <input type="hidden" name="categorie" value="<?= $_POST['categorie'] ?>" id="categorie" required>
+            <input type="hidden" name="categorie" value="<?= $_POST['categorie'] ?>" id="categorie">
         </p>
         <p>
             <label for="nom">Nom</label>
@@ -142,4 +140,3 @@ if(isset($_SESSION['login']) and $_SESSION['indesirable'] == 0){
 }
 
 ?>
-</div>

@@ -165,6 +165,22 @@ function getArticles(){
     return $req;
 }
 
+function listeArticles($recherche){
+    $bdd = connect();
+    $recherche =  "%" . htmlentities($recherche) . "%";
+    echo $recherche;
+    $req = $bdd->prepare('SELECT idNews, titre, corps, DATE_FORMAT(dateCreation, \'%d/%m/%Y à %Hh%imin%ss\') AS date_creation_fr 
+                            FROM News 
+                            where titre like :recherche1 OR corps like :recherche2
+                            ORDER BY dateCreation desc limit 0, 3 ');
+    $req->execute(array(
+        ':recherche1' => $recherche,
+        ':recherche2' => $recherche,
+    ));
+
+    return $req;
+}
+
 function getUnArticle($idNews){
     $bdd = connect();
 

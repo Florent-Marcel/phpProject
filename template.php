@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<HTML>
+<HTML lang="fr">
 <HEAD>
 <meta charset="utf-8" />    
 <TITLE><?= $title ?></TITLE>
@@ -11,10 +11,9 @@
 		<h1><a href="#">Projet Web Dev</a></h1>
 		<div class="description">Florent, Patrice & Anne-Gaëlle</div>
 	</div>
-    
-    <?= $content ?>
-</body>
+    <div id="contentarea"><?= $content ?></div>
     <div id="footer">
 		ICC 2020 - 2021
 	</div>
+	</body>
 </html>
