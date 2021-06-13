@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS `articles` (
   `prix` float NOT NULL,
   `disponible` tinyint(1) NOT NULL DEFAULT '0',
   `stock` int(11) NOT NULL
+  `actif` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 --
