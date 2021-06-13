@@ -3,6 +3,7 @@ define("server", "mysql:host=localhost");
 define("bdd", "dbname=projetdevweb");
 define("user", "root");
 
+//Connecte à la base de donnée
 function connect(){
     try{
         $bdd = new PDO('mysql:host=localhost;dbname=projetdevweb;charset=utf8', 'root', 'root');
@@ -15,6 +16,11 @@ function connect(){
     return $bdd;
 }
 
+//
+//Utilisateur
+//
+
+//Vérifie s'il y a doublon utilisateur
 function checkDuplicateUser($login, $email){
     $bdd = connect();
     $reponse = $bdd->prepare('Select login, email FROM utilisateurs');
@@ -29,6 +35,7 @@ function checkDuplicateUser($login, $email){
     return $doublon;
 }
 
+//Crée un nouvel utilisateur
 function newUser($lastname, $firstname, $address, $postcode, $birthdate, $email, $pseudo, $password){
     $bdd = connect();
     $req = $bdd->prepare('INSERT INTO utilisateurs(nom, prenom, adresse, cp, dateDeNaissance, email, login, motDePasse) VALUES(:lastname, :firstname, :address, :postcode, :birthdate, :email, :pseudo, :password)');
@@ -46,6 +53,7 @@ function newUser($lastname, $firstname, $address, $postcode, $birthdate, $email,
     return $check;
 }
 
+//Modifie un utilisateur
 function updateUser($login, $address = "", $postcode = "", $email = "", $password = "", $indesirable = ""){
     $bdd = connect();
     $user = getUser($login);
@@ -83,6 +91,7 @@ function updateUser($login, $address = "", $postcode = "", $email = "", $passwor
     }
 }
 
+//Relie une image à un utilisateur
 function linkImage($img, $login){
     $bdd = connect();
 
@@ -95,6 +104,7 @@ function linkImage($img, $login){
     return $check;
 }
 
+//Connecte un utilisateur
 function connectUser($login, $mdp){
     //$mdp = "1";
     $user = getUser($login);
@@ -110,6 +120,7 @@ function connectUser($login, $mdp){
     return false;
 }
 
+//Enregistre la connexion d'un utilisateur dans les logs
 function addLog($login){
     $bdd = connect();
     $user = getUser($login);
@@ -128,6 +139,7 @@ function addLog($login){
     return false;
 }
 
+//Récupère un utilisateur sur base de son login
 function getUser($login){
     $bdd = connect();
     $req = $bdd->prepare("SELECT * FROM utilisateurs WHERE login=:login");
@@ -142,6 +154,7 @@ function getUser($login){
     return false;
 }
 
+//Récupère un utilisateur sur base de son ID
 function getUserbyID($idUtilisateur){
     $bdd = connect();
     $req = $bdd->prepare("SELECT * FROM utilisateurs WHERE idUtilisateur=:idUtilisateur");
@@ -156,6 +169,11 @@ function getUserbyID($idUtilisateur){
     return false;
 }
 
+//
+//News
+//
+
+//Récupère les articles
 function getArticles(){
     $bdd = connect();
     $req = $bdd->query('SELECT idNews, titre, corps, DATE_FORMAT(dateCreation, \'%d/%m/%Y à %Hh%imin%ss\') AS date_creation_fr 
@@ -165,6 +183,7 @@ function getArticles(){
     return $req;
 }
 
+//Recherche des articles
 function listeArticles($recherche){
     $bdd = connect();
     $recherche =  "%" . htmlentities($recherche) . "%";
@@ -181,6 +200,7 @@ function listeArticles($recherche){
     return $req;
 }
 
+//Récupérer un article
 function getUnArticle($idNews){
     $bdd = connect();
 
@@ -196,6 +216,7 @@ function getUnArticle($idNews){
     return $news;
 }
 
+//Récupérer les commentaires d'un article
 function getCommentaires($idNews){
     $bdd = connect();
 
@@ -210,6 +231,7 @@ function getCommentaires($idNews){
     return $req;
 }
 
+//Ajoute un commentaire
 function addUnCommentaire($idNews, $texte, $login){
     $bdd = connect();
     $user = getUser($login);
@@ -222,6 +244,11 @@ function addUnCommentaire($idNews, $texte, $login){
     return $result;
 }
 
+//
+//Chat
+//
+
+//Récupérer les messages
 function getMessages($id){
     $bdd = connect();
     $req = $bdd->query('SELECT idChatMessage, login, message, DATE_FORMAT(dateMessage, \'%d/%m/%Y à %Hh%imin%ss\') AS dateFR 
@@ -232,6 +259,7 @@ function getMessages($id){
     return $req;
 }
 
+//Ajoute un message
 function addUnMessage($login, $message){
     $bdd = connect();
     $user = getUser($login);
@@ -244,6 +272,11 @@ function addUnMessage($login, $message){
     return $result;
 }
 
+//
+//Shop
+//
+
+//Récupères les catégories des articles
 function getCategoriesArticles(){
     $bdd = connect();
 
@@ -252,6 +285,7 @@ function getCategoriesArticles(){
     return $req;
 }
 
+//Récupére les articles d'une catégorie
 function getArticlesShop($categorie){
     $bdd = connect();
     $req = $bdd->prepare('SELECT idArticle, nom, categorie, prix, disponible, stock 
@@ -264,6 +298,7 @@ function getArticlesShop($categorie){
     return $req;
 }
 
+//Récupére les articles d'un tableau
 function getArticlesShopByID($idArticles){
     $idArticlesStr =  htmlentities($idArticles);
     $bdd = connect();
@@ -274,6 +309,7 @@ function getArticlesShopByID($idArticles){
     return $req;
 }
 
+//Crée une facture
 function createFacture($idUtilisateur, $prixTotal){
     $bdd = connect();
     $req = $bdd->prepare('INSERT INTO factures (idUtilisateur, prixTotal) values(:idUtilisateur, :prixTotal)');
@@ -290,6 +326,7 @@ function createFacture($idUtilisateur, $prixTotal){
     return $req2;
 }
 
+//Crée une ligne de facture
 function createLigneFacture($idFacture, $idArticle, $quantite, $prixLigne){
     $bdd = connect();
     $req = $bdd->prepare('INSERT INTO lignesFacture (idFacture, idArticle, quantite, prixLigne) values(:idFacture, :idArticle, :quantite, :prixLigne)');
@@ -302,6 +339,7 @@ function createLigneFacture($idFacture, $idArticle, $quantite, $prixLigne){
     ));    
 }  
 
+//Met à jour le stock
 function majStock($idArticle, $quantite){
     $bdd = connect();
 
@@ -328,6 +366,7 @@ function majStock($idArticle, $quantite){
     ));    
 }
 
+//Récupére les factures d'un utilisateur
 function getFacturesByIDUtilisateur($idUtilisateur){
     $bdd = connect();
     $req = $bdd->prepare('SELECT idFacture, prixTotal, DATE_FORMAT(dateCreation, \'%d/%m/%Y à %Hh%imin%ss\') AS dateFR
@@ -341,6 +380,7 @@ function getFacturesByIDUtilisateur($idUtilisateur){
     return $req;
 }
 
+//Récupére une facture sur son id
 function getFacturesByIDFacture($idFacture){
     $bdd = connect();
     $req = $bdd->prepare('SELECT idUtilisateur, idFacture, prixTotal, DATE_FORMAT(dateCreation, \'%d/%m/%Y à %Hh%imin%ss\') AS dateFR
@@ -353,6 +393,7 @@ function getFacturesByIDFacture($idFacture){
     return $req;
 }
 
+//Récupére les détails d'une facture
 function getDetailsFacture($idFacture){
     $bdd = connect();
     $req = $bdd->prepare('SELECT nom, categorie, prix, quantite, prixLigne, idFacture
@@ -366,6 +407,11 @@ function getDetailsFacture($idFacture){
     return $req;
 }
 
+//
+//Administration
+//
+
+//Récupére les logs de connexions d'un utilisateur
 function getLogUserPastDays($user, $nbDays){
     $bdd = connect();
     $req = $bdd->prepare("SELECT count(*) as nbConnexions from logconnexions where DateConnexion between adddate(now(),-:nbDays) and now()  AND idUtilisateur=:id");
@@ -382,12 +428,14 @@ function getLogUserPastDays($user, $nbDays){
     return -1;
     }
 
+//Récupére les utilisateurs
 function getusers(){
     $bdd = connect();
     $req = $bdd->query("SELECT * from utilisateurs");
     return $req;
 }
 
+//Récupére les logs du jour d'une utilisateur
 function getLogUserToday($user){
     $bdd = connect();
     $req = $bdd->prepare("SELECT count(*) as nbConnexions from logconnexions where DateConnexion > CURDATE() AND idUtilisateur=:id");
@@ -404,6 +452,7 @@ function getLogUserToday($user){
     return -1;
 }
 
+//Récupére les commentaire d'un utilisateur
 function getCommentairesUser($user){
     $bdd = connect();
     echo $user;
@@ -418,6 +467,7 @@ function getCommentairesUser($user){
     return $req;
 }
 
+//Ajoute une news
 function insertNews($user, $titre, $corps){
     $bdd = connect();
     $req = $bdd->prepare('INSERT INTO news (idUtilisateur, titre, corps) values(:idUtilisateur, :titre, :corps)');
@@ -429,6 +479,7 @@ function insertNews($user, $titre, $corps){
     ));    
 } 
 
+//Supprime un article
 function deleteArticle($idArticle){
     $bdd = connect();
     echo $idArticle;
@@ -439,6 +490,7 @@ function deleteArticle($idArticle){
     ));
 }
 
+//Crée un article
 function insertArticle($nom, $categorie, $prix, $stock){
     $bdd = connect();
     $req = $bdd->prepare('INSERT INTO articles (nom, categorie, prix, stock) values(:nom, :categorie, :prix, :stock)');

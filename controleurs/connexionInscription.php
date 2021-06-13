@@ -3,6 +3,7 @@
 require("modeles/data.php");
 require("modeles/uploadImage.php");
 
+//Crée un nouvel utilisateur
 function nouvelUtilisateur(){
     $reussieInscription = false;
     $doublon = checkDuplicateUser($_POST['pseudo'], $_POST['email']);
@@ -29,11 +30,13 @@ function nouvelUtilisateur(){
     return $reussieInscription;
 }
 
+//Affiche l'inscription
 function inscription()
 {
     require("vues/inscription.php");
 }
 
+//Connecte un utilisateur
 function connexion()
 {
     if (isset($_POST['pseudo'], $_POST['password'])) {
@@ -59,10 +62,12 @@ function connexion()
     }
 }
 
+//Affiche la connexion
 function afficheConnexion(){
     require("vues/connexion.php");
 }
 
+//Déconnecte un utilisateur
 function deconnexion()
 {
     if (isset($_SESSION['login'])) {
@@ -78,6 +83,7 @@ function deconnexion()
     require("vues/deconnexion.php");
 }
 
+//Affiche et modifie profil
 function profil()
 {
     if (isset($_SESSION['login'])) {
@@ -103,6 +109,7 @@ function profil()
     require("vues/profil.php");
 }
 
+//Modifie un profil
 function updateProfil()
 {
     if (isset($_POST['address']) or (isset($_POST['postcode'])) or (isset($_POST['email'])) or ((isset($_POST['password'])) and (isset($_POST['passwordRepeat'])))) {

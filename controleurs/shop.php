@@ -1,4 +1,6 @@
 <?php 
+
+    //Affiche le shop
     function shop(){
         
         $categories = getCategoriesArticles();
@@ -15,6 +17,7 @@
         require "vues/shop.php";
     }
 
+    //Ajoute/modifie un article au panier
     function panier(){
 
         if(isset($_POST['idArticle'], $_POST['nbArticles']) and $_POST['nbArticles'] <= 10 ){
@@ -39,6 +42,7 @@
         }
     }
 
+    //Affiche les facture
     function factures(){
         if(isset($_SESSION['idUtilisateur']))
             $factures = getFacturesByIDUtilisateur($_SESSION['idUtilisateur']);
@@ -46,6 +50,7 @@
         require "vues/factures.php";
     }
 
+    //Facture le panier
     function facturer(){
         if(isset($_SESSION['panier'], $_SESSION['total'])){
             $idArticles = implode(", ", array_keys($_SESSION['panier']));
@@ -65,6 +70,7 @@
         }
     }
 
+    //Affiche les détails d'une facture
     function detailsFacture(){
         if(isset($_POST['idFacture'], $_SESSION['login'])){
             $facturetmp = getFacturesByIDFacture($_POST['idFacture']);
