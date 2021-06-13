@@ -91,3 +91,19 @@ function adminNews(){
 
     header("LOCATION: index.php?uc=news");
 }
+
+function adminDeleteArticle(){
+    if(isset($_GET['idArticle'], $_SESSION['admin']) and $_SESSION['admin'] == 1){
+        deleteArticle($_GET['idArticle']);
+    }
+
+    header("LOCATION: index.php?uc=shop");
+}
+
+function adminAddArticle(){
+    if(isset($_POST['nom'], $_POST['categorie'], $_POST['prix'], $_POST['stock'], $_SESSION['admin']) and $_SESSION['admin'] == 1){
+        insertArticle($_POST['nom'], $_POST['categorie'], $_POST['prix'], $_POST['stock']);
+    }
+
+    header("LOCATION: index.php?uc=shop");
+}

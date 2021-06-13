@@ -158,23 +158,59 @@ require("controleurs/administration.php");
             break;
         }
         case 'administration2':{
-            listprofils();
+            if(isset($_SESSION['admin']) and $_SESSION['admin'] == 1){
+                listprofils();
+            }else{
+                ?><p><strong>Vous n'avez pas l'autorisation pour accéder à cette partie du site.</strong></p><?php
+            }
             break;
         }
         case 'administration21':{
-            profil2();
+            if(isset($_SESSION['admin']) and $_SESSION['admin'] == 1){
+                profil2();
+            }else{
+                ?><p><strong>Vous n'avez pas l'autorisation pour accéder à cette partie du site.</strong></p><?php
+            }
             break;
         }
         case 'administration3':{
-            adminGetFactures();
+            if(isset($_SESSION['admin']) and $_SESSION['admin'] == 1){
+                adminGetFactures();
+            }else{
+                ?><p><strong>Vous n'avez pas l'autorisation pour accéder à cette partie du site.</strong></p><?php
+            }
             break;
         }
         case 'administration4':{
-            admincommentaires();
+            if(isset($_SESSION['admin']) and $_SESSION['admin'] == 1){
+                admincommentaires();
+            }else{
+                ?><p><strong>Vous n'avez pas l'autorisation pour accéder à cette partie du site.</strong></p><?php
+            }
             break;
         }
         case 'adminNews':{
-            adminNews();
+            if(isset($_SESSION['admin']) and $_SESSION['admin'] == 1){
+                adminNews();
+            }else{
+                ?><p><strong>Vous n'avez pas l'autorisation pour accéder à cette partie du site.</strong></p><?php
+            }
+            break;
+        }
+        case 'adminSupprimerShop':{
+            if(isset($_SESSION['admin']) and $_SESSION['admin'] == 1){
+                adminDeleteArticle();
+            } else{
+                ?><p><strong>Vous n'avez pas l'autorisation pour accéder à cette partie du site.</strong></p><?php
+            }
+            break;
+        }
+        case 'adminAjouterShop':{
+            if(isset($_SESSION['admin']) and $_SESSION['admin'] == 1){
+                adminAddArticle();
+            } else{
+                ?><p><strong>Vous n'avez pas l'autorisation pour accéder à cette partie du site.</strong></p><?php
+            }
             break;
         }
         case 'accueil': default:{

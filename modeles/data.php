@@ -240,7 +240,7 @@ function getArticlesShop($categorie){
     $bdd = connect();
     $req = $bdd->prepare('SELECT idArticle, nom, categorie, prix, disponible, stock 
                                 FROM articles 
-                                where categorie = :categorie');
+                                where categorie = :categorie and actif = 1');
 
     $req->execute(array(
         ':categorie' => htmlentities($categorie),
@@ -411,5 +411,27 @@ function insertNews($user, $titre, $corps){
         ':titre' => htmlentities($titre),
         ':corps' => htmlentities($corps),
     ));    
-}  
+} 
+
+function deleteArticle($idArticle){
+    $bdd = connect();
+    echo $idArticle;
+    $req = $bdd->prepare('UPDATE articles set actif=0 where idArticle=:idArticle');
+
+    $req->execute(array(
+        ':idArticle' => $idArticle,
+    ));
+}
+
+function insertArticle($nom, $categorie, $prix, $stock){
+    $bdd = connect();
+    $req = $bdd->prepare('INSERT INTO articles (nom, categorie, prix, stock) values(:nom, :categorie, :prix, :stock)');
+
+    $req->execute(array(
+        ':nom' => htmlentities($nom),
+        ':categorie' => htmlentities($categorie),
+        ':prix' => htmlentities($prix),
+        ':stock' => htmlentities($stock),
+    ));    
+} 
 ?>

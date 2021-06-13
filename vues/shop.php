@@ -1,9 +1,10 @@
 <div id="contentarea">
 <p>
     <form method="post" action="index.php?uc=shop">
-        <select name="categorie" onchange="this.form.submit()">
+        <select name="categorie" onchange="this.form.submit()" onselect="this.form.submit()">
         <?php 
         if(isset($categories)){
+            ?><option valeur=" " ></option><?php
             while($categorie = $categories->fetch()){
                 ?>
                 <option valeur="<?=$categorie['categorie'] ?>" 
@@ -19,15 +20,43 @@
 </p>
 <?php
 
+if(isset($_POST['categorie'], $_SESSION['admin']) and $_SESSION['admin'] == 1){
+    ?>
+    <h1>Créer article</h1>
+    <form enctype="multipart/form-data" method="POST" action="index.php?uc=adminAjouterShop">
+        <p>
+            <input type="hidden" name="categorie" value="<?= $_POST['categorie'] ?>" id="categorie" required>
+        </p>
+        <p>
+            <label for="nom">Nom</label>
+            <input type="text" name="nom" id="nom" required>
+        </p>
+        <p>
+            <label for="prix">Prix</label>
+            <input type="number" step=".01" name="prix" id="prix" required>
+        </p>
+        <p>
+            <label for="stock">Stock</label>
+            <input type="number" name="stock" id="stock" required>
+        </p>
+        <p>
+            <input type="submit" value="envoyer">
+        </p>
+    </form>
+    <?php
+}
+
 if(isset($articles)){
     //echo $_POST['categorie'];
     ?>
     <?php
+    $cpt = 0;
     while($article = $articles->fetch()){
+        $cpt++;
         ?>
         <form method="post" action="index.php?uc=shop">
             <input type="hidden" name="categorie" value="<?= $_POST['categorie'] ?>" >
-            <input type="hidden" name="idArticle" value="<?= $article['idArticle'] ?>"/> <?=$article['nom']?> - <?=$article['prix']?>€
+            <input type="hidden" name="idArticle" value="<?= $article['idArticle'] ?>"/> <?=$article['nom']?> - <?=round($article['prix'],2)?>€
             <select name="nbArticles">
                 <?php
                 if($article['disponible'] = 1){ 
@@ -44,8 +73,17 @@ if(isset($articles)){
                 ?>
             </select>
             <?php if (isset($_SESSION['idUtilisateur'])){ ?>
-              <input type="submit" value="Ajouter au panier"> <?php } ?>
+              <input type="submit" value="Ajouter au panier"> <?php } 
+              if(isset($_SESSION['admin']) and $_SESSION['admin'] == 1){
+                  ?>
+                  <a href="index.php?uc=adminSupprimerShop&idArticle=<?= $article['idArticle'] ?>">Supprimer</a>  <?php
+              } ?>
         </form>
+        <?php
+    }
+    if($cpt == 0){
+        ?>
+        <p>Aucun article</p>
         <?php
     }
 }
